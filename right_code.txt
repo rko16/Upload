@@ -1,0 +1,241 @@
+const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
+
+const app = express();
+app.use(express.static('public'));
+
+const upload = multer({ dest: 'uploads/' });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  try {
+    const { path: filePath, originalname: fileName } = req.file;
+
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+    const { questions, options, answers, explanations } = extractData(fileContent);
+
+    const responseObject = {
+      fileName,
+      questions,
+      options,
+      answers,
+      explanations
+    };
+
+    // Delete the uploaded file
+    fs.unlinkSync(filePath);
+
+    res.status(200).json(responseObject);
+  } catch (err) {
+    console.error('Failed to process text file:', err);
+    res.status(500).json({ error: 'Failed to process text file' });
+  }
+});
+
+function extractData(fileContent) {
+    const questionRegex = /Q(\d+)\.\s+(.*?)\s+a\>(.*?)\s+b\>(.*?)\s+c\>(.*?)\s+d\>(.*?)\s+Answer:\s+\((\w)\)\s+(.*)\s+Explanation:\s+(.*)/gi;
+
+  const matches = [...fileContent.matchAll(questionRegex)];
+
+  const questions = [];
+  const options = [];
+  const answers = [];
+  const explanations = [];
+
+  for (const match of matches) {
+    const [, questionNum, question, optionA, optionB, optionC, optionD, answerCode, answer, explanation] = match;
+    questions.push({ questionNum, question });
+    options.push({ optionA, optionB, optionC, optionD });
+    answers.push({ answerCode, answer });
+    explanations.push({ explanation });
+  }
+
+  return { questions, options, answers, explanations };
+}
+
+// Start the server
+const port = 3001;
+app.listen(port, () => {
+  console.log(`Server is listening on http://localhost:${port}`);
+});
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text File Upload</title>
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .upload-form label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .upload-form button {
+      display: block;
+      margin-top: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .result-container {
+      margin-top: 20px;
+    }
+
+    .result-container h4 {
+      margin-bottom: 10px;
+    }
+
+    .result-container ol {
+      list-style-type: decimal;
+      padding-left: 20px;
+    }
+
+    .result-container li {
+      margin-bottom: 20px;
+    }
+
+    .result-container strong {
+      font-weight: bold;
+    }
+
+    .result-container ul {
+      list-style-type: lower-alpha;
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .result-container input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .result-container button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .result-container .feedback-correct {
+      color: green;
+    }
+
+    .result-container .feedback-incorrect {
+      color: red;
+    }
+
+    .result-container p {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text File Upload</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <label for="fileInput">Select Text File:</label>
+    <input type="file" id="fileInput" name="file" accept=".txt" required>
+    <button type="submit">Upload File</button>
+  </form>
+  <div id="resultContainer" class="result-container"></div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            displayResult(data);
+          } else {
+            console.error('Failed to upload file:', response.status);
+          }
+        } catch (err) {
+          console.error('Error:', err);
+        }
+      }
+    });
+
+    function displayResult(data) {
+      const resultContainer = document.getElementById('resultContainer');
+      resultContainer.innerHTML = `
+        <h4>Uploaded File: ${data.fileName}</h4>
+        <ol>
+          ${data.questions.map((question, index) => `
+            <li>
+              <strong>Q${question.questionNum}:</strong> ${question.question}<br>
+              <ul>
+                <li>
+                  <input type="radio" id="optionA-${index}" name="answer-${index}" value="a">
+                  <label for="optionA-${index}">a&gt; ${data.options[index].optionA}</label>
+                </li>
+                <li>
+                  <input type="radio" id="optionB-${index}" name="answer-${index}" value="b">
+                  <label for="optionB-${index}">b&gt; ${data.options[index].optionB}</label>
+                </li>
+                <li>
+                  <input type="radio" id="optionC-${index}" name="answer-${index}" value="c">
+                  <label for="optionC-${index}">c&gt; ${data.options[index].optionC}</label>
+                </li>
+                <li>
+                  <input type="radio" id="optionD-${index}" name="answer-${index}" value="d">
+                  <label for="optionD-${index}">d&gt; ${data.options[index].optionD}</label>
+                </li>
+              </ul>
+              <button onclick="checkAnswer(${index}, '${data.answers[index].answerCode}')">Check Answer</button>
+              <span id="feedback-${index}"></span>
+              <p>${data.explanations[index].explanation}</p>
+            </li>
+          `).join('')}
+        </ol>
+      `;
+    }
+
+    function checkAnswer(index, correctAnswer) {
+      const selectedOption = document.querySelector(`input[name="answer-${index}"]:checked`);
+
+      if (selectedOption && selectedOption.value === correctAnswer) {
+        document.getElementById(`feedback-${index}`).textContent = 'Correct!';
+        document.getElementById(`feedback-${index}`).className = 'feedback-correct';
+      } else {
+        document.getElementById(`feedback-${index}`).textContent = 'Incorrect!';
+        document.getElementById(`feedback-${index}`).className = 'feedback-incorrect';
+      }
+    }
+  </script>
+</body>
+</html>
