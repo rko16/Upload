@@ -57,7 +57,7 @@ function extractData(fileContent) {
   return { questions, options, answers, explanations };
 }
 
-const port = 3001;
+const port = 3000;
 app.listen(port, () => {
   console.log(`Server is listening on http://localhost:${port}`);
 });
