@@ -59,7 +59,7 @@ yarn.lock
 /.next/
 /.nuxt/
 /nuxt/
-/public/
+# /public/
 /.cache/
 /.sass-cache/
 
