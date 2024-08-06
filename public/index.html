@@ -129,44 +129,17 @@
         <ol>
           ${data.questions.map((question, index) => `
             <li>
-              <strong>Q${question.questionNum}:</strong> ${question.question}<br>
+              <strong>${question.questionNum} ${question.question}</strong><br>
               <ul>
-                <li>
-                  <input type="radio" id="optionA-${index}" name="answer-${index}" value="asss">
-                  <label for="optionA-${index}">(a) ${data.options[index].optionA}</label>
-                </li>
-                <li>
-                  <input type="radio" id="optionB-${index}" name="answer-${index}" value="b">
-                  <label for="optionB-${index}">(b) ${data.options[index].optionB}</label>
-                </li>
-                <li>
-                  <input type="radio" id="optionC-${index}" name="answer-${index}" value="c">
-                  <label for="optionC-${index}">(c) ${data.options[index].optionC}</label>
-                </li>
-                <li>
-                  <input type="radio" id="optionD-${index}" name="answer-${index}" value="d">
-                  <label for="optionD-${index}">(d) ${data.options[index].optionD}</label>
-                </li>
+                <li><input type="radio" id="optionA-${index}" name="answer-${index}" value="a"><label for="optionA-${index}">(a) ${data.options[index].optionA}</label></li>
+                <li><input type="radio" id="optionB-${index}" name="answer-${index}" value="b"><label for="optionB-${index}">(b) ${data.options[index].optionB}</label></li>
+                <li><input type="radio" id="optionC-${index}" name="answer-${index}" value="c"><label for="optionC-${index}">(c) ${data.options[index].optionC}</label></li>
+                <li><input type="radio" id="optionD-${index}" name="answer-${index}" value="d"><label for="optionD-${index}">(d) ${data.options[index].optionD}</label></li>
               </ul>
-              <button onclick="checkAnswer(${index}, '${data.answers[index].answerCode}')">Check Answer</button>
-              <span id="feedback-${index}"></span>
-              <p>${data.explanations[index].explanation}</p>
             </li>
           `).join('')}
         </ol>
       `;
-    }
-
-    function checkAnswer(index, correctAnswer) {
-      const selectedOption = document.querySelector(`input[name="answer-${index}"]:checked`);
-
-      if (selectedOption && selectedOption.value === correctAnswer) {
-        document.getElementById(`feedback-${index}`).textContent = 'Correct!';
-        document.getElementById(`feedback-${index}`).className = 'feedback-correct';
-      } else {
-        document.getElementById(`feedback-${index}`).textContent = 'Incorrect!';
-        document.getElementById(`feedback-${index}`).className = 'feedback-incorrect';
-      }
     }
   </script>
 </body>

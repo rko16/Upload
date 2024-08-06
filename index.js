@@ -10,23 +10,18 @@ const upload = multer({ dest: "uploads/" });
 app.post("/upload", upload.single("file"), (req, res) => {
   try {
     const { path: filePath, originalname: fileName } = req.file;
-
     const fileContent = fs.readFileSync(filePath, "utf-8");
 
-    const { questions, options, answers, explanations } =
-      extractData(fileContent);
+    const { questions, options } = extractData(fileContent);
 
     const responseObject = {
       fileName,
       questions,
       options,
-      // answers,
-      // explanations
     };
 
     fs.unlinkSync(filePath);
 
-    // Send the JSON data as a downloadable file
     res.setHeader(
       "Content-disposition",
       `attachment; filename=${fileName}.json`
@@ -40,27 +35,36 @@ app.post("/upload", upload.single("file"), (req, res) => {
 });
 
 function extractData(fileContent) {
-  // const questionRegex = /Q(\d+)\.\s+(.*?)\s+a\>(.*?)\s+b\>(.*?)\s+c\>(.*?)\s+d\>(.*?)\s+Answer:\s+\((\w)\)\s+(.*)\s+Explanation:\s+(.*)/gi;
+  // Regular expression to match questions and options with different formats
   const questionRegex =
-    /(\d+)\.\s+(.*?)\s+\(a\)(.*?)\s+\(b\)(.*?)\s+\(c\)(.*?)\s+\(d\)(.*?)/gi;
+    /(\d+\.)\s+(.*?)\s*(?:\n|$)((?:\(?[a-d]\)?[>\)]?\s.*?\n?)+)(?:\n|$)/gi;
 
   const matches = [...fileContent.matchAll(questionRegex)];
 
   const questions = [];
   const options = [];
-  // const answers = [];
-  // const explanations = [];
 
   for (const match of matches) {
-    const [, questionNum, question, optionA, optionB, optionC, optionD] = match;
-    // const [, questionNum, question, optionA, optionB, optionC, optionD, answerCode, answer, explanation] = match;
+    const [, questionNum, question, optionsBlock] = match;
+    const optionsArray = optionsBlock
+      .split("\n")
+      .filter(Boolean)
+      .map((opt) => opt.trim());
+
     questions.push({ questionNum, question });
-    options.push({ optionA, optionB, optionC, optionD });
-    // answers.push({ answerCode, answer });
-    // explanations.push({ explanation });
+    options.push({
+      optionA: getOptionText(optionsArray[0]),
+      optionB: getOptionText(optionsArray[1]),
+      optionC: getOptionText(optionsArray[2]),
+      optionD: getOptionText(optionsArray[3]),
+    });
   }
+
   return { questions, options };
-  // return { questions, options, answers, explanations };
+}
+
+function getOptionText(option) {
+  return option.replace(/^\(?[a-d]\)?[>\)]?\s*/, "").trim();
 }
 
 const port = 3000;
