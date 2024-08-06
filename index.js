@@ -22,6 +22,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
     fs.unlinkSync(filePath);
 
+    // Send the JSON data as a downloadable file
     res.setHeader(
       "Content-disposition",
       `attachment; filename=${fileName}.json`
