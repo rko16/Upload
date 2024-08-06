@@ -26,13 +26,17 @@ app.post("/upload", upload.single("file"), (req, res) => {
     fs.unlinkSync(filePath);
 
     // Send the JSON data directly in the response
+    res.setHeader(
+      "Content-disposition",
+      `attachment; filename=${fileName}.json`
+    );
+    res.setHeader("Content-type", "application/json");
     res.status(200).json(responseObject);
   } catch (err) {
     console.error("Failed to process text file:", err);
     res.status(500).json({ error: "Failed to process text file" });
   }
 });
-
 function extractData(fileContent) {
   const questionRegex =
     /(\d+\.)\s+(.*?)\s*(?:\n|$)((?:\(?[a-d]\)?[>\)]?\s.*?\n?)+)(?:\n|$)/gi;
