@@ -1,0 +1,138 @@
+@extends('app')
+@section('content')
+<section class="login-wrap">
+    <div class="container">
+        <div class="form-box">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 welcome-login flex-last mt-5">
+                <div class="title pt-3">
+                    <h2>Our <span class="text-warning"></span>Solar Story <span class="text-warning">Powering</span> a Sustainable Future <span class="text-warning">Solution</span></h2>
+                    </div>
+                    <div class="login-testimonial">
+        <div class="owl-carousel owl-carousel-single">
+            @foreach($reviews as $review)
+                      <div class="item">
+                        <div class="client_message">
+                            <p class="rating">
+                              @if($review->rating == '1')
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        @elseif($review->rating == '2')
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        @elseif($review->rating == '3')
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        @elseif($review->rating == '4')
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        @elseif($review->rating == '5')
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                        <i class="fa fa-star me-1"></i>
+                                    @endif
+                            </p>
+                            <p>
+                              "{{$review->discription}}"
+                            </p>
+                            <div class="client_info media">
+                                <div class="media-left pe-0">
+                                  <div class="testimonial_icon">
+                                  <img src="{{$review->image}}"/>
+                                </div>
+                              </div>
+                                <div class="media-body ps-0">
+                                <div class="name">
+                                  <h5 class="mb-0">{{$review->name}}</h5>
+                                  <!-- <h6>Co-Founder, Design.co</h6> -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      @endforeach
+            </div>
+       </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                   <div class="login-white-box shadow-none">
+                        <div class="title pt-3">
+                            <h3>Start your solar  <span class="text-warning">journey</span></h3>
+                        </div>
+                        
+                        <form action="{{ route('getregister') }}" method="POST" enctype="multipart/form-data" id="form">
+                          @csrf
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-ctrl form-control" autocomplete="off" placeholder="Enter" name="name" required />
+                            </div>
+                             <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" class="form-ctrl form-control" autocomplete="off" placeholder="Enter" name="email"/>
+                            </div>
+                             <div class="form-group">
+                                <label>Mobile Number</label>
+                                <div class="input-group">
+                    <input type="text" autocomplete="off" class="form-control form-ctrl" placeholder="Enter" aria-label="" aria-describedby="basic-addon2" name="number" required>
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-ctrl form-control" autocomplete="off" placeholder="Enter Password" name="password" required/>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="text" class="form-ctrl form-control" autocomplete="off" placeholder="Confirm Password" name="password_confirmation" required/>
+                            </div>
+                            @if ($errors->any())
+                              <div class="alert alert-danger">
+                                  <ul>
+                                      @foreach ($errors->all() as $error)
+                                          <li>{{ $error }}</li>
+                                      @endforeach
+                                  </ul>
+                              </div>
+                            @endif
+                            @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>    
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @endif
+                            @if ($message = Session::get('error'))
+                            <div class="alert alert-danger alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>    
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @endif
+                            <div class="form-group">
+                               <!-- <button type="submit" class="btn btn-warning btn-lg btn-submit btn-block">Register</button> -->
+                               <button type="submit" data-bs-toggle="modal"  class="btn btn-warning btn-lg btn-submit btn-block">Verify OTP</button>
+                            </div>
+
+                            <div class="form-group SignUp-txt text-center">
+                                <p>Already have an account? <a href="{{route('userloginpage')}}"> Login</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection

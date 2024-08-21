@@ -1,0 +1,288 @@
+admin side ->
+pm side ->
+user side ->
+login, register, profile, 
+
+-------------------user side bar
+@php
+    $steps = [
+        ['route' => 'userprofile', 'label' => 'Profile Details'],
+        ['route' => 'survey-design', 'label' => 'Survey & Design'],
+        ['route' => 'proposal', 'label' => 'Proposal & Order Status'],
+        ['route' => 'procurement', 'label' => 'Procurement & Execution'],
+        ['route' => 'governmentapproval', 'label' => 'Government Approvals']
+    ];
+    $currentStep = 0;
+    foreach ($steps as $index => $step) {
+        if (request()->routeIs($step['route'])) {
+            $currentStep = $index + 1;
+            break;
+        }
+    }
+@endphp
+
+@if($orderdata)
+<div class="dashbordlinks">
+    <ul class="list-unstyled account-menu">
+        <li class="menufixcolor">
+            <a href="{{ route('dashboard') }}">
+                Dashboard
+            </a>
+        </li>
+        @foreach ($steps as $index => $step)
+            <li class="@if($currentStep == $index + 1) active @elseif($currentStep > $index + 1) active completed @endif">
+                <a href="{{ route($step['route'], [$orderdata->id]) }}">
+                    <span class="me-1">{{ $index + 1 }}</span>
+                    {{ $step['label'] }}
+                </a>
+            </li>
+        @endforeach
+        <li>
+            <a href="#">
+                <span class="me-1">6</span>
+                Tracking & Monitoring
+            </a>
+        </li>
+    </ul>
+</div>
+@endif
+-------------------user side bar
+-------------------SMS user register
+
+    public function __construct(SmartpingService $smartpingService)
+    {
+        $this->smartpingService = $smartpingService;
+    }
+
+    public function getregister(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'number' => 'required|unique:users',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        Session::put('user', $request->only('name', 'email', 'number', 'password'));
+
+        $otp = rand(100000, 999999);
+        Session::put('otp', $otp);
+
+        // Send OTP via Smartping
+        $message = "Your OTP code is: $otp";
+        $this->smartpingService->sendSms($request->input('number'), $message);
+
+        return redirect()->route('otp.form');
+    }
+
+    public function showOtpForm()
+    {
+        return view('auth.otp');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string',
+        ]);
+
+        $otp = Session::get('otp');
+
+        if ($request->otp == $otp) {
+            $userData = Session::get('user');
+            // $user = User::create([
+            //     'name' => $userData['name'],
+            //     'email' => $userData['email'],
+            //     'number' => $userData['number'],
+            //     'password' => Hash::make($userData['password']),
+            // ]);
+
+            // if (!$user) {
+            //     return back()->with('error', 'User creation failed.');
+            // }
+
+            // $userID = $user->id;
+            // $userName = $user->name;
+            // $userNumber = $user->number;
+            // $userEmail = $user->email;
+            // $solarName = time();
+
+            // $newdata = new SolarInqury();
+            // $newdata->user_id = $userID;
+            // $newdata->user_name = $userName;
+            // $newdata->monumber = $userNumber;
+            // $newdata->email = $userEmail;
+            // $newdata->solar_name = $solarName;
+            // $newdata->is_ordered = '1';
+            // $newdata->save();
+
+            Session::forget('user');
+            Session::forget('otp');
+            return redirect()->route('user.login');
+        } else {
+            return back()->with('error', 'OTP does not match!');
+        }
+    }
+---------------------------------
+public function getregister(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'number'=> 'required|unique:users',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        Session::put('user', $request->only('name', 'email', 'number', 'password'));
+
+        // $senderid = $request->email;
+        // $otp = '123456';
+        // $details = [
+        //     'otp' => $otp,
+        // ];
+        // Mail::to($senderid)->send(new RegisterEmail($details));
+        return redirect()->route('otp.form');
+    }
+
+
+    public function showOtpForm(){
+        $measurementIddata = User::where('id',1)->first();
+        return view('auth.otp', compact('measurementIddata'));
+    }
+
+
+    public function verifyOtp(Request $request){
+        $request->validate([
+            'otp' => 'required|string',
+        ]);
+
+        if ($request->otp === '123456') {
+            $userData = Session::get('user');
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'number' => $userData['number'],
+                'password' => Hash::make($userData['password']),
+            ]);
+
+            if (!$user) {
+                return back()->with('error', 'User creation failed.');
+            }
+
+            $userID = $user->id;
+            $userName = $user->name;
+            $userNumber = $user->number;
+            $userEmail = $user->email;
+            // $solarName = "project_".$userName."_".time();
+            // $solarName = "project_" . time();
+            $solarName = time();
+
+            $newdata = new SolarInqury();
+            $newdata->user_id = $userID;
+            $newdata->user_name = $userName;
+            $newdata->monumber = $userNumber;
+            $newdata->email = $userEmail;
+            $newdata->solar_name = $solarName;
+            $newdata->is_ordered = '1';
+            $newdata->save();
+
+            // if($newdata){
+            //     $username = $userName;
+            //     $projectID = $newdata->id;
+            //     $date = $newdata->created_at;
+
+            //     $details = [
+            //         'username' => $username,
+            //         'projectID' => $projectID,
+            //         'date' => $date,
+            //     ];
+
+            //     Mail::to($userEmail)->send(new OrderConfirmationEmail($details));//this email will be send to the user
+            // }
+
+            Session::forget('user');
+            return redirect()->route('user.login');
+        } else {
+            return back()->with('error', 'OTP does not match!');
+        }
+    }
+---------------------------------.env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:93D65iNAfKncutrekdL6a0JC7/wW+MOO8mQhV5B7Dsw=
+APP_DEBUG=true
+APP_URL=http://b2csolar.newstaging.online
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=percept1_b2csolar
+DB_USERNAME=percept1_b2csolaruser
+DB_PASSWORD=(Z#,*5wrA~bs
+
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
+
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+
+GOOGLE_CLIENT_ID=1061070034807-e7pvo3kn8c4m3t3qe85949vmnviam7nq.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_REDIRECT_URL=http://127.0.0.1:8000/google/callback
+
+FACEBOOK_CLIENT_ID=3739012583035604
+FACEBOOK_CLIENT_SECRET=36c77810a665de8a8dc891a86d51eb6c
+FACEBOOK_CALLBACK_URL=http://localhost:8000/login/facebook/callback
+
+
+
+BULK_SMS_API_URL=https://api.bulksms.com/v1/messages
+BULK_SMS_API_USERNAME=rooftext
+BULK_SMS_API_PASSWORD=roof123
+
+
+BULK_SMS_USERNAME=rooftext
+BULK_SMS_PASSWORD=roof123
+BULK_SMS_SENDER_ID=1701172182170419883
+BULK_SMS_API_KEY=768fdfc4-83e3-41ac-8486-94bde2e02040
+
+
+RECAPTCHA_SITE_KEY=6LcUySMqAAAAAO-ncKNR7vh76ppoCcYH_oiguvyN
+RECAPTCHA_SECRET_KEY=6LcUySMqAAAAAHX8Ycto4lHjB7B0EE6hlx5oIshL
+RECAPTCHA_SITE=https://www.google.com/recaptcha/admin/
+
+https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js
+https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.js

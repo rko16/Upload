@@ -1,0 +1,36 @@
+[04-Jul-2024 22:30:33 America/Boise] PHP Warning:  require(/home4/percept1/public_html/b2csolar/vendor/composer/../phpseclib/phpseclib/phpseclib/bootstrap.php): Failed to open stream: No such file or directory in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php on line 41
+[04-Jul-2024 22:30:33 America/Boise] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/percept1/public_html/b2csolar/vendor/composer/../phpseclib/phpseclib/phpseclib/bootstrap.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php(45): {closure}('decc78cc4436b12...', '/home4/percept1...')
+#1 /home4/percept1/public_html/b2csolar/vendor/autoload.php(25): ComposerAutoloaderInitfe33f98a750b8c5a51b30c78bd3fab21::getLoader()
+#2 /home4/percept1/public_html/b2csolar/public/index.php(34): require('/home4/percept1...')
+#3 {main}
+  thrown in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php on line 41
+[04-Jul-2024 22:30:42 America/Boise] PHP Warning:  require(/home4/percept1/public_html/b2csolar/vendor/composer/../phpseclib/phpseclib/phpseclib/bootstrap.php): Failed to open stream: No such file or directory in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php on line 41
+[04-Jul-2024 22:30:42 America/Boise] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/percept1/public_html/b2csolar/vendor/composer/../phpseclib/phpseclib/phpseclib/bootstrap.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php(45): {closure}('decc78cc4436b12...', '/home4/percept1...')
+#1 /home4/percept1/public_html/b2csolar/vendor/autoload.php(25): ComposerAutoloaderInitfe33f98a750b8c5a51b30c78bd3fab21::getLoader()
+#2 /home4/percept1/public_html/b2csolar/public/index.php(34): require('/home4/percept1...')
+#3 {main}
+  thrown in /home4/percept1/public_html/b2csolar/vendor/composer/autoload_real.php on line 41
+[13-Aug-2024 00:01:54 America/Boise] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home4/percept1/public_html/b2csolar/vendor/composer/platform_check.php on line 24
+[13-Aug-2024 00:01:59 America/Boise] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home4/percept1/public_html/b2csolar/vendor/composer/platform_check.php on line 24
+[13-Aug-2024 00:02:49 America/Boise] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home4/percept1/public_html/b2csolar/vendor/composer/platform_check.php on line 24
+[13-Aug-2024 00:03:05 America/Boise] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home4/percept1/public_html/b2csolar/vendor/composer/platform_check.php on line 24
+[13-Aug-2024 00:03:28 America/Boise] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home4/percept1/public_html/b2csolar/vendor/composer/platform_check.php on line 24
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:18 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:19 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:19 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:19 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787
+[20-Aug-2024 04:50:19 America/Boise] PHP Warning:  Undefined variable $Ah in /home4/percept1/public_html/b2csolar/public/adminer.php on line 1787

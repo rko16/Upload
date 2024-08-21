@@ -1,0 +1,63 @@
+@media screen and (max-width: 1199px) {
+.font-size-60 {font-size: 42px;}
+.font-size-50 {font-size: 38px;}
+.font-size-40 {font-size: 30px;}
+.font-size-28 {font-size: 24px;}
+.font-size-25 {font-size: 20px;}
+.font-size-24 {font-size: 20px !important;}
+.font-size-22 {font-size: 18px !important;}
+.font-size-20 {font-size: 16px;}
+.font-size-16 {font-size: 15px !important;}
+.line-hight-3 {line-height: 1.5;}
+
+}
+
+@media screen and (max-width: 991px) {
+.font-size-40 {font-size: 26px;}	
+.font-size-30 {font-size: 20px;}	
+.font-size-26 {font-size: 20px;}
+.font-size-18 {font-size: 16px !important;}
+.homepad {padding-top: 3rem; padding-bottom: 4rem;}
+.owl-theme .owl-nav {left: 2rem; right: 2rem;}
+.home-banner {min-height: 650px;}
+.exploremor-mad {margin-top: 4rem;}
+.workshops-pad {padding: 110px 0 10px;}
+.logo {left: -3px;}
+}
+
+@media screen and (max-width: 767px) {
+.font-size-50 {font-size: 28px;}	
+.font-size-35 {font-size: 26px;}	
+.font-size-30 {font-size: 22px;}
+.font-size-28 {font-size: 22px;}
+.homepad {padding-top: 4rem; padding-bottom: 4rem;}
+.journey-with-box img {max-width: 140px;}
+.exploremor {margin-top: 3rem;}
+.community-section {padding-bottom: 12rem !important;}
+.meet-our-team-box img {max-width: 120px;}
+.home-banner {min-height: 560px;}
+.workshops-pad {padding: 90px 0 0px;}
+.table-responsive table {min-width: 700px;}
+.case-study-banner {min-height: 500px;}
+.form-control.apply-field {height: calc(2.1em + .75rem + 2.1px);}
+}
+
+
+
+@media screen and (max-width: 575px) {
+.font-size-35 {font-size: 22px;}
+.owl-theme .owl-nav {left: 2.3rem; right: 2.3rem;}
+.meet-our-team-box img {max-width: 90px;}
+.exploremor {margin-top: 3rem;}
+.community-section {padding-bottom: 12rem !important;}
+.case-study-banner {min-height: 450px;}
+.steps .step-item .step-button {width: 42px; height: 42px; line-height: 40px;}
+.steps .step-item > div {margin-top: -22px;}
+}
+
+@media screen and (max-width: 460px) {
+.for-colum > div,
+.three-colum > div{flex: 0 0 auto; width: 100%;}
+.next-previous a.next-icon {margin-right: 4rem;}
+.next-previous a.previous-icon {margin-left: 4rem;}
+}
